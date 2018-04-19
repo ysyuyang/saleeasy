@@ -1,0 +1,19 @@
+import java.beans.MetaData.java_util_AbstractCollection_PersistenceDelegate
+
+ext.'dataSource.url'='jdbc:mysql://115.28.147.134:3306/well?characterEncoding=UTF-8&useUnicode=true&autoReconnect=true&zeroDateTimeBehavior=round&useOldAliasMetadataBehavior=true&allowMultiQueries=true'
+ext.'dataSource.username'='vsvz'
+ext.'dataSource.password'='vsvz_root'
+ext.'dataSource.maximumPoolSize'=200
+
+ext.'shopguideSiteDomain'='http://192.168.0.200:8080'
+
+ext.'redis.host'='139.129.204.152'
+
+
+def getDateTime() {
+	java.text.DateFormat df = new java.text.SimpleDateFormat("yyyyMMddHHmmss");
+	return df.format(new Date());
+}
+
+
+version= "${getDateTime()}-exec"

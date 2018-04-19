@@ -1,0 +1,36 @@
+.childtitle_pm{
+	margin-bottom:0px;
+	margin-top:10px;
+	margin-left:30px;
+	overflow:hidden; 
+	line-height:60px;
+}
+
+.show_frome{
+	width: 250px;
+	height: 200px;
+	float:left;
+	background:#ffffff;
+	border:1px solid #ccc;
+	border-radius:6px;
+}
+
+.center_font_c{
+	text-align: center;
+	line-height:0;
+	font-size: 16px;
+	margin-top: 25px;
+}
+
+.center_font_e{
+	text-align: center;
+	line-height:0;
+	font-size: 14px;
+	margin-top: 30px;
+}
+.c_title{
+	font-family:PingFangSC-Regular;
+	font-size:16px;
+	color:#2d2d2d;
+	text-align:left;
+}

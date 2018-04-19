@@ -1,0 +1,10 @@
+.page .boxTdTwo a{padding:5px;text-decoration:none;color:#ffffff;}
+.page .boxTdTwo .current{color:#FF0000;padding:5px;}
+
+#infotable{
+	margin-top:20px;
+	background-image:url(../images/bj.jpg);
+	background-size:120% 120%;
+	background-repeat:no-repeat;
+	background-position:40% 20%;
+}

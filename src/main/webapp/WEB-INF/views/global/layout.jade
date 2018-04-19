@@ -1,0 +1,25 @@
+doctype html
+html(ng-app="eventApp")
+    head(charset="UTF-8")
+        title "dev tools"
+        include header.jade
+    body.bg-steel
+        .app-bar.fixed-top.darcula(data-role="appbar")
+            a.app-bar-element.branding 超级后台
+            span.app-bar-divider
+            ul.app-bar-menu
+                include top-menu.jade
+                
+        .page-content
+            .flex-grid.no-responsive-future
+                .row
+                    .cell.size-x150(id="cell-sidebar")
+                        ul.sidebar
+                            include left-menu.jade
+                    //正式页面内容
+                    block content
+                    
+                    
+    include footer.jade
+    
+    block scripts

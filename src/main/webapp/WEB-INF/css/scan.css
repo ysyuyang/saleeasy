@@ -1,0 +1,37 @@
+body{background:#424458;}
+.container-fluid{padding:0;float:left;width:100%;}
+.form-control{-webkit-box-shadow:none;box-shadow:none;}
+#top{background:url(../images/top.png);-moz-background-size:100% 100%;background-size:100% 100%;height:55px;line-height:55px;}
+#top img{width:30%;}
+
+#stext{border-radius:4px 0 0 4px;width:70%;float:left;}
+#submit{background:url(../images/s.png);-moz-background-size:100% 100%;background-size:100% 100%;border-radius:0px 4px 4px 0px;border:none;float:left;}
+#scanimg{margin-left:10px;}
+#form{padding-top:20px;padding-bottom:20px;padding-left:15px;padding-right:15px;}
+#alltable{color:#ffffff;}
+#alltable td{border-top:none;border-bottom:1px solid #4c4e5e;}
+#allbook td{background:#bad55e;}
+
+#jctable{color:#ffffff;}
+#jctable td{border-top:none;border-bottom:1px solid #4c4e5e;}
+.jcbook td{background:#dc6263;}
+
+.addresstable{color:#ffffff;}
+.addresstable td{border-top:none !important;border-bottom:1px solid #4c4e5e;}
+.addressbook td{background:#64a0d7;}
+
+#histable{color:#ffffff;}
+#histable td{border-top:none;border-bottom:1px solid #4c4e5e;}
+#hisbook td{background:#fbc30c;}
+
+.xq{width:86px;}
+.xq a{color:#64a0d7;text-decoration:none;}
+.rt{width:92px;}
+
+/**********************顶部轮换图片***********************/
+.swiper-container{float:left;overflow:hidden;}
+.swiper-container, .swiper-slide {height: 178px;width: 100%;}
+ .swiper-slide img{max-width:100%;}
+.pagination {bottom: 5px;left: 0;position: absolute;text-align: center;width: 100%;margin:0px;}
+.swiper-pagination-switch { background: #999 none repeat scroll 0 0;border-radius: 10px;box-shadow: 0 1px 2px #555 inset;cursor: pointer;display: inline-block;height: 10px;margin: 0 3px;width: 10px;}
+.swiper-active-switch {background: #fff none repeat scroll 0 0;}

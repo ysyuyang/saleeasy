@@ -1,0 +1,246 @@
+group 'cn.supstore'
+version '1.0-SNAPSHOT'
+buildscript {
+    repositories {
+        maven { url "http://env.xxynet.com/nexus/repository/maven-public" }
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.hidetake:gradle-ssh-plugin:2.0.0'
+    }
+}
+
+// Apply the java plugin to add support for Java
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'org.hidetake.ssh'
+
+apply from: project.file('profile/profiles.gradle');
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    maven { url "http://env.xxynet.com/nexus/repository/maven-public" }
+    jcenter() 
+}
+
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+    // The production code uses the SLF4J logging API at compile time
+    compile 'org.slf4j:slf4j-api:1.7.18'
+    compile 'org.slf4j:jcl-over-slf4j:1.7.18'
+    compile 'ch.qos.logback:logback-classic:1.1.5'
+
+
+    compile 'org.springframework:spring-webmvc:4.2.6.RELEASE'
+    compile 'de.neuland-bfi:spring-jade4j:1.1.4'
+
+    compile 'mysql:mysql-connector-java:5.1.38'
+    compile 'com.zaxxer:HikariCP:2.4.5'
+    compile 'org.hibernate:hibernate-core:5.1.0.Final'
+    compile 'org.hibernate:hibernate-java8:5.1.0.Final'
+
+    compile 'org.hibernate:hibernate-validator:5.2.4.Final'
+    compile 'org.springframework:spring-orm:4.2.6.RELEASE'
+
+
+    compile 'org.jboss.resteasy:resteasy-jaxrs:3.0.16.Final'
+    compile 'org.jboss.resteasy:resteasy-jackson2-provider:3.0.16.Final'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.7.4'
+    compile 'org.jboss.resteasy:resteasy-spring:3.0.16.Final'
+    compile 'org.jboss.resteasy:resteasy-validator-provider-11:3.0.16.Final'
+    compile 'org.jboss.resteasy:resteasy-jsapi:3.0.16.Final'
+    //compile 'org.jboss.resteasy:async-http-servlet-3.0:3.0.16.Final'
+
+	// https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-multipart-provider
+	compile 'org.jboss.resteasy:resteasy-multipart-provider:3.0.16.Final'
+
+    // redis
+    compile 'commons-pool:commons-pool:1.6'
+    compile 'redis.clients:jedis:2.8.1'
+    compile 'org.springframework.data:spring-data-redis:1.7.1.RELEASE'
+    
+    // 云通讯
+    compile files('libs/CCP_REST_SMS_SDK_JAVA_v2.6.3r.jar')
+
+
+//    compile 'javax.servlet:javax.servlet-api:3.1.0'
+//    compile 'javax:javaee-web-api:7.0'
+
+
+    compile "io.swagger:swagger-jaxrs:1.5.6"
+    compile "io.springfox:springfox-swagger2:2.4.0"
+
+	compileOnly 'org.eclipse.jetty:jetty-webapp:9.4.5.v20170502'
+    compileOnly 'org.eclipse.jetty:jetty-annotations:9.4.5.v20170502'
+    compileOnly 'org.eclipse.jetty:apache-jsp:9.4.5.v20170502'
+    compileOnly 'org.eclipse.jetty:apache-jstl:9.4.5.v20170502'
+
+    testCompile 'org.eclipse.jetty:jetty-webapp:9.4.5.v20170502'
+    testCompile 'org.eclipse.jetty:jetty-annotations:9.4.5.v20170502'
+    testCompile 'org.eclipse.jetty:apache-jsp:9.4.5.v20170502'
+    testCompile 'org.eclipse.jetty:apache-jstl:9.4.5.v20170502'
+
+    compile 'org.eclipse.jetty.http2:http2-server:9.4.5.v20170502'
+    compile 'org.eclipse.jetty:jetty-servlets:9.4.5.v20170502'
+
+    // 导出excel，poi
+    compile 'org.apache.poi:poi-ooxml:3.13'
+	
+    testCompile 'junit:junit:4.12'
+
+    testCompile "org.springframework:spring-test:4.2.6.RELEASE"
+    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+    testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4'
+    testCompile 'org.awaitility:awaitility-groovy:3.0.0'
+    
+	compile 'javax.servlet:jstl:1.2'
+    compile 'commons-fileupload:commons-fileupload:1.3.3'
+    compile "net.sf.json-lib:json-lib:2.4:jdk15" 
+}
+
+configurations.all {
+    exclude group: "commons-logging", module: "commons-logging"
+    exclude group: "org.jboss.resteasy", module: "resteasy-jettison-provider"
+    exclude group: "javax.ws.rs", module: "jsr311-api"
+}
+
+eclipse {
+    wtp {
+        facet {
+            facet name: 'jst.java', version: '1.8'
+            facet name: 'jst.web', version: '3.1'
+        }
+    }
+    classpath {
+        downloadSources=true
+        file {
+            withXml {
+                def node = it.asNode()
+                node.appendNode('classpathentry', [kind: 'src', path: 'src/main/webapp'])
+                node.remove( node.find { it.@path == 'org.eclipse.jst.j2ee.internal.web.container' } )
+                node.appendNode( 'classpathentry', [ kind: 'con', path: 'org.eclipse.jst.j2ee.internal.web.container', exported: 'true'])
+            }
+        }
+    }
+}
+
+
+task uber(type: Jar) {
+    doFirst{
+        def serviceDir = file("$buildDir/META-INF/services")
+        serviceDir.deleteDir()
+        serviceDir.mkdirs()
+
+        (configurations.compile+configurations.compileOnly).collect { jarfile ->
+            zipTree(jarfile).matching{ include 'META-INF/services/*' }.each { f ->
+                File target = new File(serviceDir, f.name)
+//                target << f.getText("UTF-8")
+//                if(!f.endsWith("\n"))
+//                    target << "\n"
+                f.eachLine {
+                    if (!target.exists() || (it ==~ /^\s*\w.*/ && !target.getText("UTF-8").contains(it))) {
+                        // println "Add " + it + " to META-INF/services/" + target.name
+                        target << it
+                        // If line did not end with new line, add one.
+                        // Mainly to handle situation when missing new line from end of the file
+                        if (!it.endsWith("\n")) {
+                            target << "\n"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Uber Jar File ',  
+            'Implementation-Version': version,
+            'Main-Class': 'cn.supstore.tool.ServerMain'
+    }
+
+    baseName = project.name + '-uber'
+    from { 
+		(configurations.compile+configurations.compileOnly).collect {
+			it.isDirectory() ? it : zipTree(it) 
+		}
+	}
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA,META-INF/services/*'
+    with jar
+
+    // Include service files from the buildDir.
+    from fileTree(buildDir).matching{ include 'META-INF/services/*' }
+    
+    from 'src/main/webapp'
+    with jar
+}
+
+remotes {
+  web {
+    role 'test_server'
+    host = '192.168.0.200'
+    user = 'root'
+    password='root200'
+    knownHosts = allowAnyHosts
+  }
+}
+
+task deploy (dependsOn: uber) {
+	doLast {
+    	println '文件位置: '+uber.archivePath
+		ssh.run {
+		    session(remotes.web) {
+		        println '上传文件中...'
+		        put from: uber.archivePath.path, into: '/usr/local/'
+		        println '上传完成'
+		    }
+		}
+    }
+}
+
+task restart {
+	doLast {
+	    ssh.run {
+	        session(remotes.web) {
+	            execute("ps -ef | grep '"+uber.archiveName+"' | grep -v grep | awk '{print \$2}'| cat", pty: true ){result ->
+	                    if(result){
+	                        println "杀死运行中进程====> id: "+result
+	                        execute("kill "+result)
+	                    }else{
+	                        println '没有运行的jar程序'
+	                    }
+	            }
+	            def cmd = "java -jar /usr/local/"+uber.archiveName 
+	            //def cmd = "cd /usr/env && touch hello.f"
+	            println '启动程序 : '+cmd
+	            execute("cd /usr/local && nohup sh -c '( ( ${cmd} )>/usr/local/template.out & echo \$! > /usr/local/template.pid)'",pty: true)
+	        }
+	    }
+    }
+}
+
+task stop {
+	doLast {
+	    ssh.run {
+	        session(remotes.web) {
+	            execute("ps -ef | grep '"+uber.archiveName+"' | grep -v grep | awk '{print \$2}'| cat", pty: true ){result ->
+	                    if(result){
+	                        println "杀死运行中进程====> id: "+result
+	                        execute("kill "+result)
+	                    }else{
+	                        println '没有运行的jar程序'
+	                    }
+	            }
+	        }
+	    }
+    }
+}

@@ -1,0 +1,118 @@
+.addCycle { 
+	border: 5px solid #dddddd ;
+	position:absolute;
+	top:20%;
+	left:30%;
+	display:none;
+	background:#ffffff;
+	border-radius:8px;
+	width:45%;
+	height:55%;
+	min-width:765px;
+	min-height:550px;
+	padding: 0 30px 15px 30px;
+	box-sizing:border-box;
+	z-index:9999;
+}
+			
+.next_button{
+	margin-left:10%;
+	border:none; 
+	padding:7px 25px;	
+	background:#5aa6ed;
+	border-radius:5px;
+	width:120px;
+	height:40px;
+	font-family:.PingFangSC-Regular;
+	font-size:16px;
+	color:#ffffff;
+	text-align:center;
+}	
+.quitbutton{
+	border:1px solid #cccccc;
+	border-radius:4px;
+	background:#ffffff;
+	width:120px;
+	height:40px;
+	font-family:.PingFangSC-Regular;
+	font-size:16px;
+	color:#7b7b7b;
+	text-align:center;
+	margin-left:30%;
+} 
+.cycleyear span{
+	font-family:.PingFangSC-Regular;
+	font-size:14px;
+	color:#4e4e4e;
+	text-align:right;
+	float:left;
+	width:120px;
+	line-height:35px;
+}
+.cycleyear input{
+	border:1px solid #cccccc;
+	width:240px;
+	height:38px;
+	margin-left:20px;
+	padding:10px;
+}
+.cycleyear select{
+	border:1px solid #cccccc;
+	width:240px;
+	height:38px;
+	margin-left:20px;
+}
+.detailcycle {
+	background:#F5F5F5;
+	display:none;
+	margin-top:20px;
+	margin-bottom:10px;
+	border-top : 1px solid #dddddd;
+	border-bottom : 1px solid #dddddd;
+}
+.cycleadd_title{
+				margin-top:2%;
+				font-family:PingFangSC-Regular;
+				font-size:18px;
+				color:#2d2d2d;
+				text-align:left;
+				border-bottom: 3px solid #e7eaec ;
+				width:100% ;
+				padding-bottom:20px;
+}
+.datetitle{
+	border-bottom:1px solid #cccccc;
+	height:50px;
+}
+.monthtitle{
+	float:left;
+	width:20%;
+	text-align:center;
+	line-height:50px;
+}
+.monthlist{
+	float:left;
+	width:40%;
+	text-align:left;
+	line-height:50px;
+}
+.placeholderclass{
+	width:240px;
+	padding-left:10px;
+}
+.datetitle1{
+	border-bottom:1px solid #cccccc;
+	height:50px;
+}
+.monthtitle1{
+	float:left;
+	width:20%;
+	text-align:center;
+	line-height:50px;
+}
+.monthlist1{
+	float:left;
+	width:40%;
+	text-align:left;
+	line-height:50px;
+}

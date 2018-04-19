@@ -1,0 +1,126 @@
+.dome{
+	height:100%;
+	width:100%;
+	position:absolute;
+	left:0;
+	top:0;
+	display:none;
+	z-index:10;
+}
+.reportadd { 
+	border: 5px solid #dddddd ;
+	position:absolute;
+	top:150px;
+	left:30%;
+	display:none;
+	background:#ffffff;
+	border-radius:8px;
+	width:45%;
+	height:55%;
+	min-width:765px;
+	min-height:550px;
+	padding:0 30px;
+	box-sizing:border-box;
+	z-index:9999;
+}
+
+.reportadd .reportadd_title{
+	margin-top:2%;
+	font-family:PingFangSC-Regular;
+	font-size:18px;
+	color:#2d2d2d;
+	text-align:left;
+	border-bottom: 3px solid #e7eaec ;
+	width:100% ;
+	padding-bottom:20px;
+}
+.select_tag{
+	background: transparent;
+   	padding: 5px;
+   	font-size: 14px;
+   	border: 1px solid #ccc;
+	width:278px;
+	height:38px;
+}
+.next_button{
+	margin-top: 10%;
+	margin-left:53%;
+	border:none; 
+	padding:7px 25px;	
+	background:#5aa6ed;
+	border-radius:5px;
+	width:120px;
+	height:40px;
+	font-family:.PingFangSC-Regular;
+	font-size:16px;
+	color:#ffffff;
+	text-align:center;
+}
+.select_brand{
+	height: 60px;
+	border-bottom: 1px solid #dadada;
+	line-height: 60px;
+}
+.research{
+	height:60px;
+	border-bottom:1px solid #dadada;
+	line-height:60px;
+}
+.research_input{
+	box-sizing:border-box;
+	height:32px;
+	border:1px solid #5aa6ed;
+	width:212px;
+	padding-left:10px;
+	line-height: 32px;
+}
+.research_button{
+	color: #fff;
+	background: #0099ff;
+	border: none;
+	width: 66px;
+	line-height: 31px;
+	height: 32px;
+	font-family: PingFangSC-Regular;
+	font-size: 14px;
+	text-align: center;
+}
+
+.chechbox_span{
+	display: inline-block;
+	height: 30px;
+	line-height: 30px;
+	overflow: hidden;
+	width: 200px;
+}
+.chechbox_span1{
+	display: inline-block;
+	height: 30px;
+	line-height: 30px;
+	overflow: hidden;
+	width: 200px;
+}
+.checkbox_class{
+	margin-top:2px;
+}
+.hidedetail{
+	border:1px solid #ff5651;
+	width:70px;
+	height:28px;
+	font-family:PingFangSC-Regular;
+	font-size:14px;
+	color:#ff5651;
+	background:#ffffff;
+	text-align:left;
+}
+.showdetail{
+	background:#ff5651;
+	border:1px solid #ff5651;
+	width:70px;
+	height:28px;
+	font-family:PingFangSC-Regular;
+	font-size:14px;
+	color:#ffffff;
+	text-align:left;
+}
+

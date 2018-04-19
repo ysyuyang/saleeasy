@@ -1,0 +1,34 @@
+meta(charset="UTF-8")
+meta(http-equiv="X-UA-Compatible" content="IE=edge")
+meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+link(rel='stylesheet',  href='./assets/metroUI/css/metro.min.css')
+link(rel='stylesheet',  href='./assets/metroUI/css/metro-responsive.min.css')
+link(rel='stylesheet',  href='./assets/metroUI/css/metro-schemes.min.css')
+link(rel='stylesheet',  href='./assets/metroUI/css/metro-icons.min.css')
+link(rel='stylesheet',  href='//prismjs.com/themes/prism.css')
+style.
+    @font-face {
+        font-family: yuehei;
+        src: url("./assets/fonts/yh.woff") format("woff");
+    }
+
+    html, body {
+        height: 100%;
+    }
+    html, body,h1, .button{
+        font-family:  Verdana, yuehei, Aril, sans-serif;
+    }
+    .page-content {
+        padding-top: 3.125rem;
+        min-height: 100%;
+        height: 100%;
+    }
+    @media screen and (max-width: 800px) {
+        #cell-sidebar {
+            flex-basis: 52px;
+        }
+
+        #cell-content {
+            flex-basis: calc(100% - 52px);
+        }
+    }

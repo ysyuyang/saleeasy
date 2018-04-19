@@ -1,0 +1,55 @@
+allprojects{
+    def propertyDrivenProfiles;
+    if (project.hasProperty('prod')) {
+        propertyDrivenProfiles = 'prod'
+        apply from: project.file('profile/profile_prod.gradle');
+        
+    } else if (project.hasProperty('stage')) {
+        propertyDrivenProfiles = 'stage'
+        apply from: project.file('profile/profile_stage.gradle');
+    
+    }else if (project.hasProperty('test')) {
+        propertyDrivenProfiles = 'test'
+        apply from: project.file('profile/profile_test.gradle');
+    
+    }  else {
+        propertyDrivenProfiles = 'dev'
+        apply from: project.file('profile/profile_dev.gradle');
+    }
+    println 'Using profile: "' + propertyDrivenProfiles + '" for ' + project.getName()
+    
+    task activeProfileValue {
+    	doLast {
+    		println '==================================================>'
+			println sourceSets.main.resources
+			
+			sourceSets.main.resources
+				.matching {
+					include '**/*.properties'
+					exclude 'resources','log4j.properties'
+				}
+				.each{file->
+					println '处理配置文件:'+file
+					Properties props = new Properties()
+					file.withReader('UTF-8') {props.load(it)}
+					ant.propertyfile(file:file){
+				    	props
+							.findAll{project.hasProperty(it.key)}
+							.each{line->
+					    		println line.key+'=====>'+project.ext.get(line.key)
+					    		entry(key:line.key,value:project.ext.get(line.key))
+							}
+					}
+				}
+			println '<================================================='
+    	}
+	}
+	
+	processResources.dependsOn activeProfileValue
+
+    //build << {
+	//    new File("${sourceSets.main.output.resourcesDir}/app.properties").withReader{
+	//    	 it.readLines().each{println it}
+	//    }
+	//}
+} 

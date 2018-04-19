@@ -1,0 +1,277 @@
+body{
+	color:#4e4e4e;
+}
+.glyphicon-plus,.glyphicon-minus{
+	font-family: Arial;
+	font-size:24px;
+	color:#d0d0d0;
+}
+#tabnav .tab{
+	height:40px;
+	font-weight:bold;
+	background-color:#F2F2F2;
+}
+#tabnav .tab div{
+	float:left;
+	width:50%;
+	height:40px;
+	border:0px;
+	
+	text-align:center;
+}
+#tabnav *{
+	line-height:40px;
+}
+#tabnav .active{
+	background-color:#ff5651;
+	color:#fff;
+}
+
+
+div[parent]{
+	margin-left:15px;
+}
+.orgNodeImg{
+	padding:10px;
+}
+.orgNode a{
+	color:#4e4e4e;
+}
+/*
+.orgdes{
+	background:#F2F2F2;/*#ecccb3 #fe6471
+}
+*/
+#detailtab .orgdes{
+	height:80px;
+}
+.orgdes div{
+	float:left;
+	height:30px;
+	background-color:#FFF;
+}
+.curorg,.curdate{
+	width:100%;
+	text-align:center;
+	font-weight:bold;
+	background-color:#F2F2F2;
+	padding:10px 0 0;
+}
+.curorg{
+	font-size: 18px;
+}
+.orgdes .salers{
+	width:50%;
+	padding:10px 20px;
+	text-align:left;
+}
+.orgdes .sites{
+	width:50%;
+	padding:10px 20px;
+	text-align:right;
+}
+.destitle{
+	margin-top:10px;
+	padding:10px 20px;
+	font-weight: bold;
+	background-color:#B1DDFA;
+	text-align:center;
+	width:100%;
+	
+}
+.timespan{
+	margin-top:10px;
+}
+.timespan span{
+	
+	width:20%;
+	border-radius:4px;
+	padding:4px;
+	margin-left:2%;
+	background-color:#eee;
+	
+}
+.timespan span[checkflag='1']{
+	background-color:#fe6471;
+	color:#ffffff;
+}
+
+.shopsales .detail{
+	margin-top:15px;
+	width:100%;
+}
+.ownsales .detail{
+	margin-top:15px;
+	width:100%;
+}
+
+ #shopsales,#ownsales{
+	height:auto!important;
+    height:350px;
+    min-height:350px;
+	max-height:500px;
+} 
+
+
+.salesdetail .detail{
+	float:left;
+	width:50%;
+	padding: 5px 20px;
+	border-bottom:1px solid #aabbcc;
+}
+
+
+.salesdetail .detail:nth-child(even){
+	text-align:right;
+	border-left:1px solid #aabbcc
+}
+.salesdetail .head{
+	float:left;
+	width:50%;
+	padding: 5px 20px;
+	border-bottom:1px solid #aabbcc;
+	text-align:center;
+	font-weight:bold;
+}
+
+.chosetype{
+	width:100%;
+}
+
+#chosetype_div {
+	width:100%;
+}
+
+
+.filtertype{
+	position:absolute;
+	bottom:0px;
+	width:100%;
+}
+.chosetype .orgdes_1{
+	color:#fff;
+	height: 140px;
+	width:100%;
+    background: -webkit-linear-gradient(#ff5651, #ff747c); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#ff5651, #ff747c); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#ff5651, #ff747c); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#ff5651, #ff747c); /* 标准的语法（必须放在最后） */
+}
+.orgdes_1 *{
+	background-color:transparent;
+}
+.chosetype .orgsum{
+	position:absolute;
+	top:90px;
+	width:90%;
+	left:5%;
+	background-color:#fff;
+	height: 90px;
+	font-size: 12px;
+	border-radius: 5px;
+}
+.chosetype table{
+	width:90%;
+	margin-left:5%;
+	text-align:center;
+	margin-top:50px;
+	background-color:#fff;
+	border-radius: 5px;
+}
+
+.chosetype tbody{
+	border-radius: 5px;
+}
+.chosetype .table td{
+	height:50px;
+	line-height:50px;
+	border-radius: 5px;
+}
+
+.chosetype tr{
+	width:90%;
+	margin-left:5%;
+	text-align:center;
+	margin-top:50px;
+	background-color:#fff;
+	border-radius: 5px;
+}
+.filtertype div{
+	text-align:center;
+	float:left;
+	width:50%;
+	height:40px;
+	line-height:40px;
+	box-sizing:border-box;
+	background-color:#fff;
+	
+}
+
+.filtertype .select{
+	background-color:#ff5651;
+	color:#fff;
+}
+
+.salers div{
+	width:100%;
+}
+.lnum{
+	color:#0099FF;
+	font-size: 16px;
+}
+
+.salers_1 div{
+	padding-top:15px;
+	width:100%;
+	text-align:center
+}
+.sites_1 div{
+	padding-top:15px;
+	width:100%;
+	text-align:center
+}
+.managers_1 div{
+	padding-top:15px;
+	width:100%;
+	text-align:center
+}
+.salers_1{
+	float:left;
+	width:34%;
+	padding:10px 0px 10px 0px;
+	text-align:left;
+	height:50px;
+}
+.sites_1{
+	float:left;
+	width:34%;
+	padding:10px 0px 10px 0px;
+	text-align:right;
+	height:50px;
+}
+.managers_1{
+	float:left;
+	width:32%;
+	padding:10px 0px 10px 0px;
+	text-align:left;
+	height:50px;
+}
+#layer_back{
+	width:50px;
+}
+.layer-noborder{
+	border:0 px
+}
+
+table td,th{
+	text-align:center;
+	width:33.3%;
+	
+}
+.table td{
+	border-top: 1px solid #f5f5f5 !important;
+}
+
+.textdes{
+	color:#8c8a8a;
+}

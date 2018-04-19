@@ -1,0 +1,20 @@
+import java.beans.MetaData.java_util_AbstractCollection_PersistenceDelegate
+
+ext.'dataSource.url'='jdbc:mysql://rm-m5e5g1prrz3aw3v8g.mysql.rds.aliyuncs.com:3306/well?characterEncoding=UTF-8&useUnicode=true&autoReconnect=true&zeroDateTimeBehavior=round&useOldAliasMetadataBehavior=true&allowMultiQueries=true'
+ext.'dataSource.username'='vsvz_gj'
+ext.'dataSource.password'='Cjdg_2017_gj'
+ext.'dataSource.maximumPoolSize'=200
+
+ext.'shopguideSiteDomain'='http://bms.microc.cn'
+ext.'calendarSiteDomain'='http://client.supshop.cn'
+
+ext.'redis.host'='10.25.72.48'
+
+
+def getDateTime() {
+	java.text.DateFormat df = new java.text.SimpleDateFormat("yyyyMMddHHmmss");
+	return df.format(new Date());
+}
+
+
+version= "${getDateTime()}-exec"

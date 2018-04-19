@@ -1,0 +1,98 @@
+extends global/layout.jade
+
+block content
+    .cell.auto-size.padding20.bg-white(id="cell-content" ng-controller="eventCtrl as vm")
+        h1.text-light(name="title") 中文,欢迎使用,中文
+        .row.content
+            .cell.colspan12
+                #{registrar.toString()}
+        .row.flex-just-end.headerCtrl.padding10
+            .button.mif-drive-eta(ng-click="vm.refresh()" ) 刷新全部
+            .button.mif-drive-eta(ng-click="vm.createNew()" ) 新建
+        .row.flex-just-end.headerCtrl
+            ul: li(ng-repeat="it in vm.evtList")
+                .span {{it.id}}  {{it.description}} {{it.date}}
+                    .button(ng-click="vm.detail(it.id)") 刷新
+                    .button(ng-click="vm.delete(it.id)") 删除
+        .row.content
+            .cell.colspan12.textarea.input-control(data-role="input" data-text-auto-resize="true")
+                textarea(ng-model="vm.sql" ng-keypress="vm.sqlQuery($event)")
+        .tabcontrol2(data-role="tabcontrol")
+            ul.tabs
+                li: a(href="#structure") 结构
+                li: a(href="#code") 代码
+            .frames
+                #structure.frame
+                    table.table.striped.hovered.cell-hovered.border.bordered
+                        tr(ng-repeat="row in vm.rs track by $index")
+                            td(ng-repeat="(key,value) in row track by key") {{value}}
+                #code.frame
+                    .tabcontrol2.tabs-bottom(data-role="tabcontrol")
+                        ul.tabs
+                            li: a(href="#dto") DTO
+                            li: a(href="#api") PATH
+                            li: a(href="#service") Service
+                        .frames.language-javascript
+                            #dto.frame
+                                pre
+                                    p public class xxxDto{}{
+                                    p(ng-repeat="row in vm.rs track by $index")  {{row[2]}} {{row[0]|camel}};
+                                    p }
+                            #api.frame
+                                pre.
+                                    @GET
+                                    @Path("/page")
+                                    @Produces(MediaType.APPLICATION_JSON)
+                                    Page<?> pageBy(@BeanParam Page page);
+                            #service.frame
+                                pre.
+                                    class xxxService extend GenericService{
+                                        public Page<xxxDto> pageBy(Page<xxxDto> page){
+                                            String sql = "{{vm.sql}}";
+                                            return getPageBySQL(sql,xxxDto.class,page.getPageSize(),page.getNowPage());
+                                        }
+                                    }
+block scripts
+    script.
+        angular.module('eventApp',[])
+            .filter('camel',function(){
+                return function (field) {
+                    return field.toLowerCase().replace(/_(\w)/g, function($1) {
+                        return $1.toUpperCase()}
+                    ).replace(/_/g, '');
+                }
+            })
+            .controller('eventCtrl',function($http){
+                var self = this;
+                self.sql="SELECT * FROM `information_schema`.`TABLES` t WHERE t.`TABLE_NAME` LIKE 'tm%'";
+                self.detail=function(id){
+                    console.log(IEvent.getById({eventId:id}));
+                };
+                self.delete=function(id){
+                    IEvent.delete({eventId:id});
+                    this.refresh();
+                };
+                self.refresh=function(){self.evtList =JSON.parse(IEvent.list());}
+                self.createNew=function(){
+                    IEvent.create({$entity:{description:"test"}})
+                    this.refresh();
+                };
+                self.refresh();
+                self.isQuery=false;
+                self.sqlQuery=function(e){
+                    self.sql = self.sql.toLowerCase();
+                    if((e.ctrlKey || e.metaKey) && (e.keyCode == 13 || e.keyCode == 10)){
+                        e.preventDefault();
+                        if(self.isQuery)
+                                return;
+                        self.isQuery = true;
+                        self.rs = {}
+                        $http.post("/sqlQuery", JSON.stringify(self.sql)).then(function (resp) {
+                            self.isQuery=false;
+                            console.log(resp.data);
+                            if(resp.data.length)
+                                self.rs = resp.data;
+                        },function(){self.isQuery=false;})
+                    }
+                }
+            })
