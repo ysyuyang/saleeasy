@@ -18,14 +18,14 @@ public class AutoBean {
     }
 
     //final static String database = "valley";
-    final static String url = "jdbc:mysql://115.28.147.134:3306/well?characterEncoding=UTF-8&amp;useUnicode=true&amp;autoReconnect=true&amp;zeroDateTimeBehavior=round&amp;useOldAliasMetadataBehavior=true&amp;allowMultiQueries=true";
-    final static String user = "vsvz", password = "vsvz_root";
-    final static String targetFolder = "src/main/java/cn/supstore/biz/infotrain/model";
-    final static String packageName="cn.supstore.biz.infotrain.model";
+    final static String url = "jdbc:mysql://127.0.0.1:3306/sale_db?characterEncoding=UTF-8&amp;useUnicode=true&amp;autoReconnect=true&amp;zeroDateTimeBehavior=round&amp;useOldAliasMetadataBehavior=true&amp;allowMultiQueries=true";
+    final static String user = "user1", password = "123456";
+    final static String targetFolder = "src/main/java/cn/supstore/biz/model";
+    final static String packageName="cn.supstore.biz.model";
     final static String tab = "  ";
 
     final static List<Table> tables = new ArrayList<Table>();
-    String tablename ="tt_publicity";
+    String tablename ="tt_config_attr";
     
     String convertType(String sqlType) {
         if (sqlType.startsWith("varchar")||sqlType.startsWith("text")) return "String";

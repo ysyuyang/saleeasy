@@ -1,5 +1,7 @@
 package cn.supstore.core.base.web;
 
+
+import cn.supstore.biz.util.QueryPage;
 import cn.supstore.core.base.hibernate.transformer.CommonTransformer;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
@@ -12,7 +14,10 @@ import javax.annotation.Resource;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by liusijin on 2016/5/23.
@@ -303,7 +308,58 @@ public abstract class GenericService<T, PK extends Serializable> implements ISer
     public T getByHQL(String hql) {
         return (T) getSession().createQuery(hql).uniqueResult();
     }
-
+    /**
+     * 返回一个对象，没有则返回null
+     * @param hql
+     * @param param
+     * @return
+     */
+    public T getSingleByHQL(String hql,Object[] param) {
+    	Query q = getSession().createQuery(hql);
+        for(int i=0;i<param.length;i++){
+        	q.setParameter(i, param[i]);
+        }
+        List list = q.list();
+        return list.size()>0?(T) list.get(0):null;
+    }
+    
+    public List<T> getByHQL(String hql,Object[] param) {
+    	Query q = getSession().createQuery(hql);
+        for(int i=0;i<param.length;i++){
+        	q.setParameter(i, param[i]);
+        }
+        return q.list();
+    }
+    
+    public List<T> getByHQL(String hql,Object[] param,QueryPage<T> pg) {
+    	Query q = getSession().createQuery(hql);
+        for(int i=0;i<param.length;i++){
+        	q.setParameter(i, param[i]);
+        }
+        q.setFirstResult((pg.getNowPage()-1)*pg.getPageSize()).setMaxResults(pg.getPageSize()).list();
+        return q.list();
+    }
+   
+    public Page<T> getPageByHQL(String hql, Object[] param,QueryPage<T> pg) {
+        Page<T> pager = new Page<T>();
+        Query q = getSession().createQuery(hql);
+        String countHQL = "select count(*) " + hql.substring(hql.indexOf("from"));
+        Query q1 = getSession().createQuery(countHQL);
+        for(int i=0;i<param.length;i++){
+        	q.setParameter(i, param[i]);
+        	q1.setParameter(i, param[i]);
+        }
+        q.setFirstResult((pg.getNowPage()-1)*pg.getPageSize()).setMaxResults(pg.getPageSize()).list();
+        pager.setList(q.list());
+        pager.setPageSize(pg.getPageSize());
+        pager.setNowPage(pg.getNowPage());
+        
+        Number total = (Number) q1.uniqueResult();
+        pager.setTotalCount(total.intValue());
+        pager.setMaxPage((total.intValue()+  pg.getPageSize()  - 1)/pg.getPageSize());
+        return pager;
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -365,50 +421,124 @@ public abstract class GenericService<T, PK extends Serializable> implements ISer
         pager.setMaxPage((total.intValue()+  pageSize  - 1)/pageSize);
         return pager;
     }
-    
-    public List<T> getPageByHQL(String hql, Object[] params) {
-    	Query q = getSession().createQuery(hql);
-    	int len = 0;
-    	if(params != null && (len = params.length)>0) {
-    		if(len == 1) {
-    			q.setParameter(0, params[0]);
-    		} else {
-    			for (int i = 0; i<len; i++) {
-    				q.setParameter(i, params[i]);
-    			}
-    		}
-    	}
-    	List<T> list = q.list();
-        return list;
-    }
-    
-    public Page<T> getPageByHQL(String hql, Integer pageSize, Integer page, Object[] params) {
-    	Page<T> pager = new Page<T>();
-    	Query q = getSession().createQuery(hql);
-    	String countHQL = "select count(*) " + hql.substring(hql.indexOf("from"));
-        Query q1 = getSession().createQuery(countHQL);
-    	int len = 0;
-    	if(params != null && (len = params.length)>0) {
-    		if(len == 1) {
-    			q.setParameter(0, params[0]);
-    			q1.setParameter(0, params[0]);
-    		} else {
-    			for (int i = 0; i<len; i++) {
-    				q.setParameter(i, params[i]);
-    				q1.setParameter(i, params[i]);
-    			}
-    		}
-    	}
-    	List<T> list = q.setFirstResult((page-1)*pageSize).setMaxResults(pageSize).list();
-    	pager.setList(list);
-    	pager.setPageSize(pageSize);
+    /**
+     * 适合普通的分页查询
+     * @param sql
+     * @param obja
+     * @param pageSize
+     * @param page
+     * @return
+     */
+    public Page<T> getPageBySQL(String sql,Object[] obja, Integer pageSize, Integer page) {
+        Page<T> pager = new Page<T>();
+        Query q = getSession().createSQLQuery(sql);
+        for(int i=0;i<obja.length;i++){
+        	q.setParameter(i, obja[i]);
+        }
+        if(page!=null&&pageSize!=null){
+        	q.setFirstResult((page-1)*pageSize).setMaxResults(pageSize);
+        }
+        pager.setList(q.list());
+        pager.setPageSize(pageSize);
         pager.setNowPage(page);
-        Number total = (Number) q1.uniqueResult();
-        pager.setTotalCount(total.intValue());
+        String countHQL = "select count(*) " + sql.substring(sql.indexOf("from"));
+        Query qcount = getSession().createSQLQuery(countHQL);
+        for(int i=0;i<obja.length;i++){
+        	qcount.setParameter(i, obja[i]);
+        }
+        Number total = (Number) qcount.uniqueResult();
+        pager.setTotalCount(total==null?0:total.intValue());
         pager.setMaxPage((total.intValue()+  pageSize  - 1)/pageSize);
         return pager;
     }
-
+    /**
+     * 用于含有in的查询对集合类型参数的赋值
+     * @param sql
+     * @param param
+     * @param pageSize 
+     * @param page
+     * @return
+     */
+    public Page<T> getPageBySQL(String sql,Map<String, Object> param, Integer pageSize, Integer page) {
+        Page<T> pager = new Page<T>();
+        Query query = getSession().createSQLQuery(sql);
+        if (param != null) {  
+            Set<String> keySet = param.keySet();  
+            for (String string : keySet) {  
+                Object obj = param.get(string);  
+                //这里考虑传入的参数是什么类型，不同类型使用的方法不同  
+                if(obj instanceof Collection<?>){  
+                    query.setParameterList(string, (Collection<?>)obj);  
+                }else if(obj instanceof Object[]){  
+                    query.setParameterList(string, (Object[])obj);  
+                }else{  
+                    query.setParameter(string, obj);  
+                }  
+            }  
+        } 
+        if(page!=null&&pageSize!=null){
+        	query.setFirstResult((page-1)*pageSize).setMaxResults(pageSize);
+        }
+        pager.setList(query.list());
+        pager.setPageSize(pageSize);
+        pager.setNowPage(page);
+        String countHQL = "select count(*) " + sql.substring(sql.indexOf("from"));
+        Query qcount = getSession().createSQLQuery(countHQL);
+        if (param != null) {  
+            Set<String> keySet = param.keySet();  
+            for (String string : keySet) {  
+                Object obj = param.get(string);  
+                //这里考虑传入的参数是什么类型，不同类型使用的方法不同  
+                if(obj instanceof Collection<?>){  
+                	qcount.setParameterList(string, (Collection<?>)obj);  
+                }else if(obj instanceof Object[]){  
+                	qcount.setParameterList(string, (Object[])obj);  
+                }else{  
+                	qcount.setParameter(string, obj);  
+                }  
+            }  
+        }  
+        Number total = (Number) qcount.uniqueResult();
+        pager.setTotalCount(total==null?0:total.intValue());
+        pager.setMaxPage((total.intValue()+  pageSize  - 1)/pageSize);
+        return pager;
+    }
+    
+    /**
+     * SQL查询并转换为相应对象
+     * @param sql
+     * @param param
+     * @param T.class
+     * @param pageSize 
+     * @param page
+     * @return
+     */
+    public List<T> QueryObjBySQL(String sql,Object[] param,Class clazz, Integer pageSize, Integer page) {
+        Query query = getSession().createSQLQuery(sql).addEntity(clazz);
+        if (param != null) {  
+        	for(int i=0;i<param.length;i++){
+            	query.setParameter(i, param[i]);
+            }
+        }  
+        if(page!=null&&pageSize!=null&&pageSize!=0){
+        	query.setFirstResult((page-1)*pageSize).setMaxResults(pageSize);
+        }
+        return query.list();
+    }
+    
+    public List<T> queryBySQL(String sql,Object[] param,QueryPage pg) {
+        Query query = getSession().createSQLQuery(sql);
+        if (param != null) {  
+        	for(int i=0;i<param.length;i++){
+            	query.setParameter(i, param[i]);
+            }
+        }  
+        if(pg.getNowPage()!=null&&pg.getPageSize()!=null&&pg.getPageSize()!=0){
+        	query.setFirstResult((pg.getNowPage()-1)*pg.getPageSize()).setMaxResults(pg.getPageSize());
+        }
+        return query.list();
+    }
+    
     @Override
     public Page getPageBySQL(String sql, Class clazz, Integer pageSize, Integer page) {
         Page pager = new Page();
@@ -422,43 +552,6 @@ public abstract class GenericService<T, PK extends Serializable> implements ISer
         pager.setNowPage(page);
         String countSQL = "select count(*) from ( " + sql+") as temp";
         Number total = (Number) getSession().createSQLQuery(countSQL).uniqueResult();
-        pager.setTotalCount(total.intValue());
-        pager.setMaxPage((total.intValue()+  pageSize  - 1)/pageSize);
-        return pager;
-    }
-    
-    public Page getPageBySQL(String sql, Class clazz, Integer pageSize, Integer page, Object[] params) {
-    	Page<T> pager = new Page<T>();
-    	Query q = getSession().createSQLQuery(sql);
-    	int len = 0;
-    	if(params != null && (len = params.length)>0) {
-    		if(len == 1) {
-    			q.setParameter(0, params[0]);
-    		} else {
-    			for (int i = 0; i<len; i++) {
-    				q.setParameter(i, params[i]);
-    			}
-    		}
-    	}
-    	if(clazz != null) {
-    		q.setResultTransformer(CommonTransformer.of(clazz));
-    	}
-    	List<T> list = q.setFirstResult((page-1)*pageSize).setMaxResults(pageSize).list();
-    	pager.setList(list);
-    	pager.setPageSize(pageSize);
-        pager.setNowPage(page);
-        String countSQL = "select count(*) from ( " + sql+") as temp";
-        Query q1 = getSession().createSQLQuery(countSQL);
-        if(params != null && (len = params.length)>0) {
-    		if(len == 1) {
-    			q1.setParameter(0, params[0]);
-    		} else {
-    			for (int i = 0; i<len; i++) {
-    				q1.setParameter(i, params[i]);
-    			}
-    		}
-    	}
-        Number total = (Number) q1.uniqueResult();
         pager.setTotalCount(total.intValue());
         pager.setMaxPage((total.intValue()+  pageSize  - 1)/pageSize);
         return pager;
@@ -499,5 +592,37 @@ public abstract class GenericService<T, PK extends Serializable> implements ISer
         page.setList(criteria.getExecutableCriteria(getSession()).setFirstResult((page.getNowPage()-1)*page.getPageSize()).setMaxResults(page.getPageSize()).list());
         return page;
     }
-
+    
+    public Integer executeBySQL(String sql,Object[] param) {
+    	Query q = getSession().createSQLQuery(sql);
+        for(int i=0;i<param.length;i++){
+        	q.setParameter(i, param[i]);
+        }
+        return q.executeUpdate();
+    }
+    public Integer executeBySQL(String sql) {
+    	Query q = getSession().createSQLQuery(sql);
+        return q.executeUpdate();
+    }
+    public Integer executeByHQL(String hql,Object[] param) {
+    	Query q = getSession().createQuery(hql);
+        for(int i=0;i<param.length;i++){
+        	q.setParameter(i, param[i]);
+        }
+        return q.executeUpdate();
+    }
+    public List queryBySQL(String sql,Object[] param) {
+    	Query q = getSession().createSQLQuery(sql);
+        for(int i=0;i<param.length;i++){
+        	q.setParameter(i, param[i]);
+        }
+        return q.list();
+    }
+    public List queryMapListBySQL(String sql,Object[] param) {
+    	Query q = getSession().createSQLQuery(sql);
+        for(int i=0;i<param.length;i++){
+        	q.setParameter(i, param[i]);
+        }
+        return q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+    }
 }

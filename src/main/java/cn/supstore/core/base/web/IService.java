@@ -98,14 +98,13 @@ public interface IService<T, PK extends Serializable> {
     @SuppressWarnings("unchecked")
     Page<T> getPageByHQL(String hql, Integer pageSize, Integer page);
     
-    List<T> getPageByHQL(String hql, Object[] params);
-    
-    Page<T> getPageByHQL(String hql, Integer pageSize, Integer page, Object[] params);
+     
+     
 
     @SuppressWarnings("unchecked")
     Page getPageBySQL(String sql, Class clazz, Integer pageSize, Integer page);
     
-    Page getPageBySQL(String sql, Class clazz, Integer pageSize, Integer page, Object[] params);
+ 
 
     @SuppressWarnings({ "rawtypes" })
     Page getObjectPage(DetachedCriteria criteria, Page page, Projection projection, Class clazz);

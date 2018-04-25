@@ -26,7 +26,7 @@ function menuhtml(){
 							<div onselectstart='return false;' onclick='selItem(this,4)'><img id='before1' src='./image/reportchecked.png' style='width:20px;height:20px;margin:10px 24px;display:none;'/><img id='before' src='./image/reportunchecked.png' style='width:20px;height:20px;margin:10px 24px'/><span>报表中心</span><img id='after' src='./image/menudown.png' style='width:12px;height:6px;margin-right:10px;float:right;margin-top:17px;'/>\
 								<div class='item1' id='childBanner'>\
 								</div>\
-							</div>\ <div onselectstart='return false;' onclick='selItem(this,5)'><img id='before1' src='./image/salarychecked.png' style='width:20px;height:20px;margin:10px 24px;display:none;'/><img id='before' src='./image/salaryunchecked.png' style='width:20px;height:20px;margin:10px 24px'/><span>工资管理</span><img id='after' src='./image/menudown.png' style='width:12px;height:6px;margin-right:10px;float:right;margin-top:17px;'/>\
+							</div>\ <div onselectstart='return false;' onclick='selItem(this,5)'><img id='before1' src='./image/salarychecked.png' style='width:20px;height:20px;margin:10px 24px;display:none;'/><img id='before' src='./image/salaryunchecked.png' style='width:20px;height:20px;margin:10px 24px'/><span>基础配置</span><img id='after' src='./image/menudown.png' style='width:12px;height:6px;margin-right:10px;float:right;margin-top:17px;'/>\
 								<div class='item1' id='childBanner'>\
 								</div>\
 							</div>\
@@ -42,7 +42,7 @@ function menuhtml(){
 	   			[{name:'区域管理', url:'area.html?userId='+userId+'&token='+token+'&a=d&b=a1'}, {name:'上报管理', url:'report.html?userId='+userId+'&token='+token+'&a=d&b=a2'}/*, {name:'产品分值', url:'product_score.html'}, {name:'任务发放', url:'target.html'}*/],
 	  		    [{name:'人员信息', url:'sales_info_report.html?userId='+userId+'&token='+token+'&a=e&b=a1'},{name:'休假情况', url:'offwork_info_report.html?userId='+userId+'&token='+token+'&a=e&b=a2'},{name:'签到信息', url:'clock_info_report.html?userId='+userId+'&token='+token+'&a=e&b=a3'},
 	  		     {name:'店铺签到状态', url:'shop_sign_report.html?userId='+userId+'&token='+token+'&a=e&b=a4'}],
-	    			[{name:'工资发放', url:'salary.html?userId='+userId+'&token='+token+'&a=f&b=a1'}],
+	    		[{name:'基本属性', url:'cfg/commonattr'}],
 	   	/*		[{name:'周期设置', url:'cycle_set.html'}]*/
 	   		];
 	   		function selItem(self, id) {
